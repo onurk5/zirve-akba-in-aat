@@ -58,7 +58,7 @@ export function Footer({ logoUrl = "/logo.png" }: { logoUrl?: string }) {
                 </div>
                 <div className="flex flex-col pt-1">
                   <span className="text-xs text-zinc-400 uppercase tracking-widest mb-1 font-bold">Müşteri Hizmetleri</span>
-                  <span className="text-zinc-900 font-bold text-base leading-snug">0 (554) 747 31 90<br/>0 (545) 246 24 04</span>
+                  <span className="text-zinc-900 font-bold text-base leading-snug">0 (554) 747 31 90<br/>0 (545) 246 24 04<br/>0 (533) 565 69 93</span>
                 </div>
               </li>
               <li className="flex items-start gap-4">

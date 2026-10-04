@@ -60,6 +60,7 @@ export default function ContactPage() {
                     <h3 className="font-bold text-zinc-900 mb-2 uppercase tracking-widest text-sm">Telefon</h3>
                     <p className="text-zinc-600">0 (554) 747 31 90</p>
                     <p className="text-zinc-600">0 (545) 246 24 04</p>
+                    <p className="text-zinc-600">0 (533) 565 69 93</p>
                   </div>
                 </div>
 
