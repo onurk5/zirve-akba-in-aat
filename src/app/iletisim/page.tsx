@@ -48,7 +48,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-zinc-900 mb-2 uppercase tracking-widest text-sm">Merkez Ofis</h3>
-                    <p className="text-zinc-600 leading-relaxed">Fenerbahçe Mah. Kalamış Cad. No:12<br/>Kadıköy, İstanbul</p>
+                    <p className="text-zinc-600 leading-relaxed">Safa Mahallesi<br/>Hilmi Sokak. No:8</p>
                   </div>
                 </div>
 
@@ -58,8 +58,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-zinc-900 mb-2 uppercase tracking-widest text-sm">Telefon</h3>
-                    <p className="text-zinc-600">0 (212) 555 00 00</p>
-                    <p className="text-zinc-600">0 (532) 555 00 00</p>
+                    <p className="text-zinc-600">0 (554) 747 31 90</p>
+                    <p className="text-zinc-600">0 (545) 246 24 04</p>
                   </div>
                 </div>
 

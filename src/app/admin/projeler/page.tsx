@@ -1,7 +1,7 @@
 import { db } from "@/lib/db"
 import Link from "next/link"
-import { Plus, Trash2, Edit, ExternalLink } from "lucide-react"
-import { deleteProject } from "@/app/actions/project-actions"
+import { Plus, Trash2, Edit, ExternalLink, Eye, EyeOff } from "lucide-react"
+import { deleteProject, toggleProjectStatus } from "@/app/actions/project-actions"
 
 export default async function AdminProjectsPage() {
   const projects = await db.project.findMany({
@@ -49,7 +49,12 @@ export default async function AdminProjectsPage() {
                 return (
                   <tr key={project.id} className="hover:bg-muted/10 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="font-medium text-foreground">{project.title}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-foreground">{project.title}</p>
+                        {!project.published && (
+                          <span className="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full border border-red-200">PASİF</span>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground mt-0.5">/{project.slug}</p>
                     </td>
                     <td className="px-6 py-4 text-muted-foreground">{project.location}</td>
@@ -63,10 +68,15 @@ export default async function AdminProjectsPage() {
                         <a href={`/projeler/${project.slug}`} target="_blank" className="p-2 text-muted-foreground hover:text-primary transition-colors bg-white border rounded-lg shadow-sm" title="Görüntüle">
                           <ExternalLink className="w-4 h-4" />
                         </a>
-                        <button className="p-2 text-muted-foreground hover:text-primary transition-colors bg-white border rounded-lg shadow-sm" title="Düzenle">
+                        <form action={async () => { "use server"; await toggleProjectStatus(project.id, project.published); }}>
+                          <button type="submit" className={`p-2 transition-colors bg-white border rounded-lg shadow-sm ${project.published ? 'text-green-600 hover:text-green-700' : 'text-amber-500 hover:text-amber-600'}`} title={project.published ? 'Pasife Al (Gizle)' : 'Aktife Al (Yayınla)'}>
+                            {project.published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                          </button>
+                        </form>
+                        <Link href={`/admin/projeler/duzenle/${project.id}`} className="p-2 text-muted-foreground hover:text-primary transition-colors bg-white border rounded-lg shadow-sm" title="Düzenle">
                           <Edit className="w-4 h-4" />
-                        </button>
-                        <form action={deleteAction}>
+                        </Link>
+                        <form action={async () => { "use server"; await deleteProject(project.id); }}>
                           <button type="submit" className="p-2 text-muted-foreground hover:text-red-600 transition-colors bg-white border rounded-lg shadow-sm" title="Sil">
                             <Trash2 className="w-4 h-4" />
                           </button>

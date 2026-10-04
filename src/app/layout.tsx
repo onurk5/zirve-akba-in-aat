@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConditionalHeader, ConditionalFooter } from "@/components/layout/conditional-layout";
 import { LocalBusinessSchema } from "@/components/seo/local-business-schema";
+import { WhatsAppButton } from "@/components/ui/whatsapp-button";
+import { db } from "@/lib/db";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,17 +40,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await db.siteSettings.findFirst();
+  const logoUrl = settings?.logoUrl || "/logo.png";
+
   return (
     <html lang="tr" className={`${inter.variable} scroll-smooth`}>
       <body className="min-h-screen flex flex-col font-sans antialiased bg-background text-foreground">
-        <ConditionalHeader />
+        <ConditionalHeader logoUrl={logoUrl} />
         <main className="flex-1">{children}</main>
-        <ConditionalFooter />
+        <ConditionalFooter logoUrl={logoUrl} />
+        <WhatsAppButton />
         <LocalBusinessSchema />
       </body>
     </html>

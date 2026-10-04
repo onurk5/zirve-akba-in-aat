@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { LayoutDashboard, FolderKanban, MessageSquare, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, FolderKanban, MessageSquare, Settings, LogOut, FileText, Users } from "lucide-react"
 
 export default async function AdminLayout({
   children,
@@ -34,9 +34,17 @@ export default async function AdminLayout({
             <MessageSquare className="w-5 h-5 text-muted-foreground" />
             Gelen Kutusu
           </Link>
+          <Link href="/admin/haberler" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors">
+            <FileText className="w-5 h-5 text-muted-foreground" />
+            Haberler & Blog
+          </Link>
           <Link href="/admin/ayarlar" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors">
             <Settings className="w-5 h-5 text-muted-foreground" />
             Genel Ayarlar
+          </Link>
+          <Link href="/admin/kullanicilar" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors">
+            <Users className="w-5 h-5 text-muted-foreground" />
+            Kullanıcılar
           </Link>
         </nav>
         <div className="p-4 border-t">

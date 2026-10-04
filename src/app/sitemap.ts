@@ -9,6 +9,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     where: { status: "Tamamlandı" } // Optional filter if needed
   })
 
+  const posts = await db.post.findMany({
+    select: { slug: true, updatedAt: true },
+    where: { published: true }
+  })
+
   const projectUrls = projects.map((project) => ({
     url: `${baseUrl}/projeler/${project.slug}`,
     lastModified: project.updatedAt,
@@ -47,6 +52,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
-    ...projectUrls
+    {
+      url: `${baseUrl}/haberler`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    ...projectUrls,
+    ...posts.map((post) => ({
+      url: `${baseUrl}/haberler/${post.slug}`,
+      lastModified: post.updatedAt,
+      changeFrequency: 'yearly',
+      priority: 0.6,
+    } as MetadataRoute.Sitemap[0]))
   ]
 }

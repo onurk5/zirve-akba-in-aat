@@ -2,9 +2,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// SQLite (Yerel Geliştirme İçin)
+// Vercel'e yüklemeden hemen önce burayı yorum satırı yapın.
+// datasource db {
+//   provider = "sqlite"
+//   url      = env("DATABASE_URL")
+// }
+
+// PostgreSQL (Vercel / Supabase Canlı Ortam İçin)
+// Vercel'e yüklerken üstteki SQLite kısmını gizleyip, burayı açın.
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -26,6 +36,7 @@ model Project {
   afterImage   String
   seoTitle     String?
   seoDesc      String?
+  published    Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -59,4 +70,19 @@ model SiteSettings {
   address     String
   mapEmbedUrl String
   schemaJson  String?
+  logoUrl     String?
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String
+  content     String
+  image       String?
+  published   Boolean  @default(true)
+  seoTitle    String?
+  seoDesc     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

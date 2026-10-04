@@ -9,6 +9,7 @@ import { WorkProcessBackground } from "@/components/ui/work-process-background";
 
 export default async function Home() {
   const projects = await db.project.findMany({
+    where: { published: true },
     orderBy: { createdAt: 'desc' },
     take: 5
   });
@@ -19,7 +20,7 @@ export default async function Home() {
       <HeroSlider projects={projects} />
 
       {/* ABOUT SECTION - Premium Redesign */}
-      <section className="py-24 lg:py-32 bg-[#FAFAFA] overflow-hidden">
+      <section className="py-12 md:py-20 lg:py-32 bg-[#FAFAFA] overflow-hidden">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
 
@@ -36,33 +37,33 @@ export default async function Home() {
                   <span className="text-[#E58C36] font-bold tracking-[0.2em] text-sm uppercase">Hakkımızda</span>
                 </div>
 
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 leading-[1.1] tracking-tight">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 leading-[1.1] tracking-tight">
                   Sadece Bina Değil, <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E58C36] to-orange-400">
                     Gelecek
                   </span> İnşa Ediyoruz.
                 </h2>
 
-                <p className="text-lg text-zinc-600 leading-relaxed max-w-xl">
+                <p className="text-base md:text-lg text-zinc-600 leading-relaxed max-w-xl">
                   Zirve Akbaş İnşaat olarak 12 yıllık tecrübemizle, estetik ve sağlamlığın mükemmel uyumunu yakalıyoruz. Her projemizde kalite standartlarını yeniden belirliyor, güvenle yaşanacak modern alanlar tasarlıyoruz.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-8 pt-4">
+              <div className="grid grid-cols-2 gap-6 md:gap-8 pt-2 md:pt-4">
                 <div>
-                  <div className="text-4xl font-bold text-zinc-900 mb-2">150<span className="text-[#E58C36]">+</span></div>
-                  <div className="text-sm text-zinc-500 font-medium uppercase tracking-wider">Tamamlanan Proje</div>
-                  <div className="h-1 w-12 bg-zinc-200 mt-4 rounded-full"></div>
+                  <div className="text-3xl md:text-4xl font-bold text-zinc-900 mb-2">15<span className="text-[#E58C36]">+</span></div>
+                  <div className="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Tamamlanan Proje</div>
+                  <div className="h-1 w-12 bg-zinc-200 mt-2 md:mt-4 rounded-full"></div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-zinc-900 mb-2">%100</div>
-                  <div className="text-sm text-zinc-500 font-medium uppercase tracking-wider">Müşteri Memnuniyeti</div>
-                  <div className="h-1 w-12 bg-zinc-200 mt-4 rounded-full"></div>
+                  <div className="text-3xl md:text-4xl font-bold text-zinc-900 mb-2">%100</div>
+                  <div className="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Müşteri Memnuniyeti</div>
+                  <div className="h-1 w-12 bg-zinc-200 mt-2 md:mt-4 rounded-full"></div>
                 </div>
               </div>
 
-              <div className="pt-6">
-                <Link href="/hakkimizda" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-8 py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20">
+              <div className="!mt-4 md:!mt-8">
+                <Link href="/hakkimizda" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-6 py-3.5 md:px-8 md:py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20 text-sm">
                   Hakkımızda
                   <span className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
                     <ArrowRight className="w-4 h-4" />
@@ -95,7 +96,7 @@ export default async function Home() {
       </section>
 
       {/* PROJECTS SHOWCASE */}
-      <section className="py-24 bg-white">
+      <section className="py-12 lg:py-24 bg-white">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 md:mb-16">
             <div className="space-y-4">
@@ -103,37 +104,35 @@ export default async function Home() {
                 <div className="h-[2px] w-12 bg-[#E58C36]"></div>
                 <span className="text-[#E58C36] font-bold tracking-[0.2em] text-sm uppercase">Projelerimiz</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-zinc-900">Öne Çıkan Başarılar</h2>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-zinc-900">Öne Çıkan Başarılar</h2>
             </div>
           </div>
 
-          <div id="projects-slider" className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            {[
-              { title: "Sunset Vadi Villaları", loc: "Zekeriyaköy, İstanbul", img: "/project-1.jpg", type: "Lüks Konut" },
-              { title: "Aethelgard Rezidans", loc: "Ataşehir, İstanbul", img: "/project-2.jpg", type: "Rezidans" },
-              { title: "Skyline Teras", loc: "Kadıköy, İstanbul", img: "/project-3.jpg", type: "Kentsel Dönüşüm" }
-            ].map((p, idx) => (
-              <div key={idx} className="w-[85vw] sm:w-[60vw] md:w-auto shrink-0 snap-center group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer">
-                <Image src={p.img} alt={p.title} fill className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+          <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div id="projects-slider" className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+              {projects.slice(0, 3).map((p, idx) => (
+                <Link href={`/projeler/${p.slug}`} key={p.id} className="w-[85vw] sm:w-[60vw] md:w-auto shrink-0 snap-center group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer block bg-zinc-100">
+                  <Image src={p.afterImage} alt={p.title} fill className="object-cover object-top group-hover:scale-110 transition-transform duration-1000 ease-out" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="bg-[#E58C36] text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full w-fit mb-4 shadow-lg shadow-[#E58C36]/30">
-                    {p.type}
+                  <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="bg-[#E58C36] text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full w-fit mb-4 shadow-lg shadow-[#E58C36]/30">
+                      {p.status}
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2 leading-snug">{p.title}</h3>
+                    <div className="flex items-center gap-2 text-zinc-300 text-sm">
+                      <MapPin className="w-4 h-4" /> {p.location}
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">{p.title}</h3>
-                  <div className="flex items-center gap-2 text-zinc-300 text-sm">
-                    <MapPin className="w-4 h-4" /> {p.loc}
-                  </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              ))}
+            </div>
+            
+            <ScrollArrows targetId="projects-slider" overlay autoScroll interval={3500} />
           </div>
           
-          <ScrollArrows targetId="projects-slider" />
-          
-          <div className="mt-12 flex justify-center">
-            <Link href="/projeler" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-8 py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
+          <div className="mt-8 flex justify-center">
+            <Link href="/projeler" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-6 py-3.5 md:px-8 md:py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
               Tüm Projeleri Gör
               <span className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
                 <ArrowRight className="w-4 h-4" />
@@ -146,7 +145,7 @@ export default async function Home() {
 
 
       {/* TESTIMONIALS */}
-      <section className="py-24 bg-white">
+      <section className="py-12 lg:py-24 bg-white">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16 space-y-4">
             <div className="flex justify-center items-center gap-4">
@@ -154,52 +153,54 @@ export default async function Home() {
               <span className="text-[#E58C36] font-bold tracking-[0.2em] text-sm uppercase">Müşteri Yorumları</span>
               <div className="h-[2px] w-12 bg-[#E58C36]"></div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-zinc-900">Güven İnşa Ediyoruz</h2>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-zinc-900">Güven İnşa Ediyoruz</h2>
           </div>
 
-          <div id="testimonials-slider" className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            {[
-              {
-                text: "Kentsel dönüşüm sürecimizde firmayla çalışmak hayatımızın en doğru kararıydı. Söz verdikleri tarihten bile önce, kusursuz bir işçilikle evimizi teslim ettiler.",
-                name: "Ahmet Yılmaz",
-                role: "Arsa Sahibi",
-                rating: 5
-              },
-              {
-                text: "Kullanılan malzemelerin kalitesi ve detaylara gösterilen özen gerçekten muazzam. Ailemle birlikte güven içinde ve çok şık bir evde oturmanın mutluluğunu yaşıyoruz.",
-                name: "Elif Demir",
-                role: "Daire Sahibi",
-                rating: 5
-              },
-              {
-                text: "Projenin başından sonuna kadar gösterdikleri şeffaflık ve profesyonel yaklaşım, inşaat sektörüne olan tüm önyargılarımı yıktı. Kesinlikle tavsiye ediyorum.",
-                name: "Mustafa Kaya",
-                role: "Yatırımcı",
-                rating: 5
-              }
-            ].map((t, idx) => (
-              <div key={idx} className="w-[85vw] sm:w-[60vw] md:w-auto shrink-0 snap-center bg-[#FAFAFA] p-8 md:p-10 rounded-2xl border border-zinc-100 relative group hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300">
-                <Quote className="absolute top-8 right-8 w-12 h-12 text-zinc-200 group-hover:text-[#E58C36]/20 transition-colors" />
-                <div className="flex gap-1 mb-6">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-[#E58C36] text-[#E58C36]" />
-                  ))}
+          <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div id="testimonials-slider" className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+              {[
+                {
+                  text: "Kentsel dönüşüm sürecimizde firmayla çalışmak hayatımızın en doğru kararıydı. Söz verdikleri tarihten bile önce, kusursuz bir işçilikle evimizi teslim ettiler.",
+                  name: "Ahmet Yılmaz",
+                  role: "Arsa Sahibi",
+                  rating: 5
+                },
+                {
+                  text: "Kullanılan malzemelerin kalitesi ve detaylara gösterilen özen gerçekten muazzam. Ailemle birlikte güven içinde ve çok şık bir evde oturmanın mutluluğunu yaşıyoruz.",
+                  name: "Elif Demir",
+                  role: "Daire Sahibi",
+                  rating: 5
+                },
+                {
+                  text: "Projenin başından sonuna kadar gösterdikleri şeffaflık ve profesyonel yaklaşım, inşaat sektörüne olan tüm önyargılarımı yıktı. Kesinlikle tavsiye ediyorum.",
+                  name: "Mustafa Kaya",
+                  role: "Yatırımcı",
+                  rating: 5
+                }
+              ].map((t, idx) => (
+                <div key={idx} className="w-[85vw] sm:w-[60vw] md:w-auto shrink-0 snap-center bg-[#FAFAFA] p-8 md:p-10 rounded-2xl border border-zinc-100 relative group hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300">
+                  <Quote className="absolute top-8 right-8 w-12 h-12 text-zinc-200 group-hover:text-[#E58C36]/20 transition-colors" />
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-[#E58C36] text-[#E58C36]" />
+                    ))}
+                  </div>
+                  <p className="text-zinc-600 leading-relaxed mb-8 italic">"{t.text}"</p>
+                  <div>
+                    <h4 className="font-bold text-zinc-900">{t.name}</h4>
+                    <p className="text-sm text-zinc-500 font-medium">{t.role}</p>
+                  </div>
                 </div>
-                <p className="text-zinc-600 leading-relaxed mb-8 italic">"{t.text}"</p>
-                <div>
-                  <h4 className="font-bold text-zinc-900">{t.name}</h4>
-                  <p className="text-sm text-zinc-500 font-medium">{t.role}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            
+            <ScrollArrows targetId="testimonials-slider" overlay autoScroll interval={4500} />
           </div>
-          
-          <ScrollArrows targetId="testimonials-slider" />
         </div>
       </section>
 
       {/* WORK PROCESS SECTION - Neon Dark Theme */}
-      <section className="relative py-24 bg-zinc-950 overflow-hidden border-t border-zinc-900">
+      <section className="relative py-12 lg:py-24 bg-zinc-950 overflow-hidden border-t border-zinc-900">
         <style dangerouslySetInnerHTML={{__html: `
           @keyframes travelDot {
             0% { left: 0%; opacity: 0; }
@@ -275,7 +276,7 @@ export default async function Home() {
               <span className="text-[#E58C36] font-bold tracking-[0.3em] text-sm uppercase">Çalışma Sürecimiz</span>
               <span className="h-[2px] w-8 bg-[#E58C36]"></span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase">
               Fikirden Anahtara <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E58C36] to-[#fbc899] font-medium italic normal-case tracking-normal">
                 Kusursuz Adımlar
@@ -385,7 +386,7 @@ export default async function Home() {
 
 
       {/* SERVICES / FEATURES SECTION */}
-      <section className="py-24 bg-zinc-50">
+      <section className="py-12 lg:py-24 bg-zinc-50">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-16">
             <div className="max-w-2xl space-y-4">
@@ -401,8 +402,8 @@ export default async function Home() {
 
           <FeaturesSlider />
           
-          <div className="mt-12 flex justify-center">
-            <Link href="/hizmetler" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-8 py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
+          <div className="mt-8 flex justify-center">
+            <Link href="/hizmetler" className="group inline-flex items-center justify-center gap-3 bg-zinc-900 text-white px-6 py-3.5 md:px-8 md:py-4 rounded-full font-medium hover:bg-[#E58C36] transition-all duration-300 shadow-xl shadow-zinc-900/20 hover:shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
               Tüm Hizmetlerimiz
               <span className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
                 <ArrowRight className="w-4 h-4" />
@@ -413,25 +414,25 @@ export default async function Home() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="relative py-24 bg-zinc-900 overflow-hidden">
+      <section className="relative py-12 lg:py-24 bg-zinc-900 overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
           <Image src="/cta-bg-v2.jpg" alt="Modern Architecture" fill className="object-cover" />
         </div>
-        <div className="w-full max-w-4xl mx-auto px-4 relative z-10 text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+        <div className="w-full max-w-4xl mx-auto px-4 relative z-10 text-center space-y-6 md:space-y-8">
+          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
             Hayalinizdeki Projeyi <br /> <span className="text-[#E58C36]">Birlikte İnşa Edelim.</span>
           </h2>
-          <p className="text-lg text-zinc-300">
+          <p className="text-base md:text-lg text-zinc-300">
             Kentsel dönüşüm, arsa karşılığı inşaat veya özel taahhüt projeleriniz için uzman ekibimizle tanışın. Size özel çözümler sunmak için buradayız.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Link href="/iletisim" className="group inline-flex items-center justify-center gap-3 bg-[#E58C36] text-white px-8 py-4 rounded-full font-medium hover:bg-white hover:text-zinc-900 transition-all duration-300 shadow-xl shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center pt-4">
+            <Link href="/iletisim" className="group inline-flex items-center justify-center gap-3 bg-[#E58C36] text-white px-6 py-3.5 md:px-8 md:py-4 rounded-full font-medium hover:bg-white hover:text-zinc-900 transition-all duration-300 shadow-xl shadow-[#E58C36]/20 text-xs md:text-sm tracking-widest uppercase">
               BİZİMLE İLETİŞİME GEÇİN
               <span className="bg-black/10 rounded-full p-1 group-hover:translate-x-1 transition-transform">
                 <ArrowRight className="w-4 h-4" />
               </span>
             </Link>
-            <Link href="/projeler" className="group inline-flex items-center justify-center gap-3 bg-transparent text-white border border-zinc-600 px-8 py-4 rounded-full font-medium hover:bg-white/10 transition-all duration-300 text-sm tracking-widest uppercase">
+            <Link href="/projeler" className="group inline-flex items-center justify-center gap-3 bg-transparent text-white border border-zinc-600 px-6 py-3.5 md:px-8 md:py-4 rounded-full font-medium hover:bg-white/10 transition-all duration-300 text-xs md:text-sm tracking-widest uppercase">
               PROJELERİ İNCELEYİN
               <span className="bg-white/10 rounded-full p-1 group-hover:translate-x-1 transition-transform">
                 <ArrowRight className="w-4 h-4" />

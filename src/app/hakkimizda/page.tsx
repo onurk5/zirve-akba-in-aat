@@ -76,12 +76,7 @@ export default function HakkimizdaPage() {
               <div className="absolute bottom-10 left-0 w-[55%] aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
                 <Image src="/project-2.jpg" alt="Zirve Akbaş Proje" fill className="object-cover" />
               </div>
-              
-              {/* Floating Badge */}
-              <div className="absolute top-1/2 -left-4 sm:-left-10 -translate-y-1/2 bg-zinc-900 p-6 sm:p-8 rounded-2xl shadow-xl border border-zinc-800 text-center">
-                <ShieldCheck className="w-10 h-10 sm:w-12 sm:h-12 text-[#E58C36] mx-auto mb-3 sm:mb-4" />
-                <div className="text-white font-bold text-lg sm:text-xl uppercase tracking-widest">Güven &<br/>Kalite</div>
-              </div>
+
             </div>
           </div>
         </div>
@@ -118,9 +113,13 @@ export default function HakkimizdaPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-zinc-900 text-center">
-        <div className="max-w-3xl mx-auto px-4 space-y-8">
-          <h2 className="text-3xl md:text-5xl font-bold text-white">Projelerimizi Hayata Geçirmek İçin Sabırsızlanıyoruz.</h2>
+      <section className="py-32 text-center relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image src="/cta-bg-v2.jpg" alt="İletişim" fill className="object-cover" />
+          <div className="absolute inset-0 bg-zinc-950/80"></div>
+        </div>
+        <div className="max-w-3xl mx-auto px-4 space-y-8 relative z-10">
+          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">Projelerimizi Hayata Geçirmek İçin Sabırsızlanıyoruz.</h2>
           <div className="flex justify-center gap-4 pt-4">
             <Link href="/iletisim" className="group inline-flex items-center justify-center gap-3 bg-[#E58C36] text-white px-8 py-4 rounded-full font-medium hover:bg-white hover:text-zinc-900 transition-all duration-300 shadow-xl shadow-[#E58C36]/20 text-sm tracking-widest uppercase">
               BİZİMLE İLETİŞİME GEÇİN

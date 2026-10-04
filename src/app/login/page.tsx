@@ -21,13 +21,13 @@ export default function LoginPage() {
           
           <form action={formAction} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-foreground">E-posta</label>
+              <label className="block text-sm font-medium mb-1 text-foreground">Kullanıcı Adı veya E-posta</label>
               <input 
-                type="email" 
+                type="text" 
                 name="email"
                 required
                 className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                placeholder="admin@ornek.com"
+                placeholder="Örn: hakan"
               />
             </div>
             <div>
