@@ -31,7 +31,7 @@ export default function MediaLibraryPage() {
           name: file.name, 
           url: urlData.publicUrl,
           size: file.metadata?.size || 0,
-          created_at: file.created_at
+          created_at: file.created_at || new Date().toISOString()
         }
       })
 
