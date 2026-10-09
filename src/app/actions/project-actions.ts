@@ -16,10 +16,15 @@ async function handleFileUpload(file: File | null) {
     const ext = file.name.split('.').pop() || "jpg";
     const filename = `${Date.now()}-${Math.round(Math.random() * 10000)}.${ext}`;
     
+    // Convert Web File to Node Buffer for reliable Supabase upload
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
     const { data, error } = await supabase
       .storage
       .from('images')
-      .upload(filename, file, {
+      .upload(filename, buffer, {
+        contentType: file.type || 'image/jpeg',
         cacheControl: '3600',
         upsert: false
       })
