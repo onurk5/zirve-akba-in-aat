@@ -2,10 +2,11 @@
 
 import { useActionState, useEffect, useState } from "react"
 import { createProject } from "@/app/actions/project-actions"
-import { ArrowLeft, Save } from "lucide-react"
+import { ArrowLeft, Save, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LocationSelector } from "@/components/ui/location-selector"
+import { uploadImageClient } from "@/lib/upload-client"
 
 export default function NewProjectPage() {
   const [state, formAction, isPending] = useActionState(createProject, undefined)
@@ -16,14 +17,18 @@ export default function NewProjectPage() {
   const [seoTitle, setSeoTitle] = useState("")
   const [seoDesc, setSeoDesc] = useState("")
   const [published, setPublished] = useState(true)
+  const [beforeImageUrl, setBeforeImageUrl] = useState("")
+  const [afterImageUrl, setAfterImageUrl] = useState("")
   const [beforeImagePreview, setBeforeImagePreview] = useState<string | null>(null)
   const [afterImagePreview, setAfterImagePreview] = useState<string | null>(null)
+  const [uploadingBefore, setUploadingBefore] = useState(false)
+  const [uploadingAfter, setUploadingAfter] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setTitle(val)
     
-    // Generate slug
     const generatedSlug = val
       .toLowerCase()
       .trim()
@@ -42,11 +47,48 @@ export default function NewProjectPage() {
     setSeoDesc(`${val} kentsel dönüşüm ve inşaat projesi hakkında detaylı bilgiler.`)
   }
 
+  const handleFileSelect = async (file: File, type: "before" | "after") => {
+    setUploadError(null)
+    const preview = URL.createObjectURL(file)
+
+    if (type === "before") {
+      setBeforeImagePreview(preview)
+      setUploadingBefore(true)
+    } else {
+      setAfterImagePreview(preview)
+      setUploadingAfter(true)
+    }
+
+    try {
+      const url = await uploadImageClient(file)
+      if (type === "before") {
+        setBeforeImageUrl(url)
+      } else {
+        setAfterImageUrl(url)
+      }
+    } catch (err: any) {
+      setUploadError(err.message || "Resim yüklenirken hata oluştu.")
+      if (type === "before") {
+        setBeforeImagePreview(null)
+      } else {
+        setAfterImagePreview(null)
+      }
+    } finally {
+      if (type === "before") {
+        setUploadingBefore(false)
+      } else {
+        setUploadingAfter(false)
+      }
+    }
+  }
+
   useEffect(() => {
     if (state?.success) {
       router.push("/admin/projeler")
     }
   }, [state, router])
+
+  const isUploading = uploadingBefore || uploadingAfter
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -64,7 +106,11 @@ export default function NewProjectPage() {
       </div>
 
       <div className="bg-white rounded-2xl border shadow-sm p-6 md:p-8">
-        <form action={formAction} className="space-y-6" encType="multipart/form-data">
+        <form action={formAction} className="space-y-6">
+          {/* Hidden inputs for uploaded image URLs */}
+          <input type="hidden" name="afterImage" value={afterImageUrl} />
+          <input type="hidden" name="beforeImage" value={beforeImageUrl} />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Proje Başlığı</label>
@@ -105,17 +151,21 @@ export default function NewProjectPage() {
                 <div className="flex flex-col sm:flex-row gap-4 items-start">
                   <div className="flex-1 w-full">
                     <input 
-                      name="beforeImageFile" 
                       type="file" 
                       accept="image/*" 
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) setBeforeImagePreview(URL.createObjectURL(file));
+                        if (file) handleFileSelect(file, "before");
                       }}
                       className="w-full px-4 py-2 bg-white rounded-lg border text-sm" 
                     />
                   </div>
-                  {beforeImagePreview && (
+                  {uploadingBefore && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="w-4 h-4 animate-spin" /> Yükleniyor...
+                    </div>
+                  )}
+                  {beforeImagePreview && !uploadingBefore && (
                     <div className="w-full sm:w-32 h-24 shrink-0 rounded-lg overflow-hidden border relative bg-zinc-100">
                       <img src={beforeImagePreview} alt="Öncesi" className="w-full h-full object-cover" />
                     </div>
@@ -128,25 +178,29 @@ export default function NewProjectPage() {
                 <div className="flex flex-col sm:flex-row gap-4 items-start">
                   <div className="flex-1 w-full">
                     <input 
-                      name="afterImageFile" 
                       type="file" 
                       accept="image/*" 
-                      required
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) setAfterImagePreview(URL.createObjectURL(file));
+                        if (file) handleFileSelect(file, "after");
                       }}
                       className="w-full px-4 py-2 bg-white rounded-lg border text-sm" 
                     />
                   </div>
-                  {afterImagePreview && (
+                  {uploadingAfter && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="w-4 h-4 animate-spin" /> Yükleniyor...
+                    </div>
+                  )}
+                  {afterImagePreview && !uploadingAfter && (
                     <div className="w-full sm:w-32 h-24 shrink-0 rounded-lg overflow-hidden border relative bg-zinc-100">
                       <img src={afterImagePreview} alt="Sonrası" className="w-full h-full object-cover" />
                     </div>
                   )}
                 </div>
                 {state?.details?.afterImage && <p className="text-red-500 text-xs mt-2">{state.details.afterImage}</p>}
-                <p className="text-xs text-muted-foreground mt-3">Sadece bilgisayarınızdan veya cihazınızdan görsel yükleyebilirsiniz.</p>
+                {!afterImageUrl && <p className="text-xs text-muted-foreground mt-3">Lütfen bir kapak görseli seçin. Seçtiğiniz anda otomatik olarak yüklenecektir.</p>}
+                {afterImageUrl && <p className="text-xs text-green-600 mt-3 font-medium">✓ Görsel başarıyla yüklendi!</p>}
               </div>
             </div>
             
@@ -167,6 +221,12 @@ export default function NewProjectPage() {
             </div>
           </div>
 
+          {uploadError && (
+            <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
+              {uploadError}
+            </div>
+          )}
+
           {state?.error && (
             <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
               {state.error}
@@ -176,10 +236,10 @@ export default function NewProjectPage() {
           <div className="pt-4 border-t flex justify-end">
             <button 
               type="submit" 
-              disabled={isPending}
+              disabled={isPending || isUploading || !afterImageUrl}
               className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm disabled:opacity-70"
             >
-              <Save className="w-4 h-4" /> {isPending ? "Kaydediliyor..." : "Projeyi Kaydet"}
+              <Save className="w-4 h-4" /> {isPending ? "Kaydediliyor..." : isUploading ? "Resim yükleniyor..." : !afterImageUrl ? "Önce kapak görseli seçin" : "Projeyi Kaydet"}
             </button>
           </div>
         </form>

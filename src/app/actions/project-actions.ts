@@ -4,67 +4,24 @@ import { db } from "@/lib/db"
 import { projectSchema } from "@/lib/schemas"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/auth"
-import path from "path"
-import { supabase } from "@/lib/supabase"
-
-async function handleFileUpload(file: File | null) {
-  try {
-    if (!file || file.size === 0) return null;
-    if (typeof file === 'string') throw new Error(`Beklenmeyen dosya formatı (Metin geldi). Form doğru çalışmıyor. ${file.substring(0, 50)}`);
-    if (!file.name) throw new Error("Dosya adı yok.");
-    
-    const ext = file.name.split('.').pop() || "jpg";
-    const filename = `${Date.now()}-${Math.round(Math.random() * 10000)}.${ext}`;
-    
-    // Convert Web File to Node Buffer for reliable Supabase upload
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const { data, error } = await supabase
-      .storage
-      .from('images')
-      .upload(filename, buffer, {
-        contentType: file.type || 'image/jpeg',
-        cacheControl: '3600',
-        upsert: false
-      })
-
-    if (error) {
-      console.error("Supabase yükleme hatası:", error);
-      throw new Error(`Resim yüklenemedi: ${error.message}`);
-    }
-
-    const { data: publicUrlData } = supabase
-      .storage
-      .from('images')
-      .getPublicUrl(filename);
-      
-    return publicUrlData.publicUrl;
-  } catch (err: any) {
-    console.error("handleFileUpload crashed:", err);
-    if (err.message?.includes('Resim yüklenemedi')) {
-        throw err;
-    }
-    throw new Error(`Resim yükleme sunucu hatası: ${err.message || "Bilinmeyen"}`);
-  }
-}
 
 export async function createProject(prevState: any, formData: FormData) {
   try {
     const session = await auth()
     if (!session) return { error: "Yetkisiz erişim. Lütfen giriş yapın." }
 
-    const data = Object.fromEntries(formData.entries())
-
-    // Checkbox mapping for create (just in case)
-    data.published = formData.get('published') === 'on';
-
-    // Handle files
-    const uploadedAfter = await handleFileUpload(formData.get("afterImageFile") as File | null);
-    if (uploadedAfter) data.afterImage = uploadedAfter;
-
-    const uploadedBefore = await handleFileUpload(formData.get("beforeImageFile") as File | null);
-    if (uploadedBefore) data.beforeImage = uploadedBefore;
+    const data: Record<string, any> = {
+      title: formData.get("title") as string,
+      slug: formData.get("slug") as string,
+      description: formData.get("description") as string,
+      location: formData.get("location") as string,
+      status: formData.get("status") as string,
+      afterImage: formData.get("afterImage") as string,
+      beforeImage: (formData.get("beforeImage") as string) || "",
+      seoTitle: (formData.get("seoTitle") as string) || "",
+      seoDesc: (formData.get("seoDesc") as string) || "",
+      published: formData.get("published") === "on",
+    }
 
     const validatedFields = projectSchema.safeParse(data)
 
@@ -79,7 +36,7 @@ export async function createProject(prevState: any, formData: FormData) {
     revalidatePath("/projeler")
     return { success: true, project }
   } catch (error: any) {
-    console.error("Proje oluşturma genel hatası:", error)
+    console.error("Proje oluşturma hatası:", error)
     return { error: `Sistemsel bir hata oluştu: ${error.message || 'Bilinmeyen hata'}` }
   }
 }
@@ -123,24 +80,18 @@ export async function updateProject(id: string, prevState: any, formData: FormDa
     const session = await auth()
     if (!session) return { error: "Yetkisiz erişim. Lütfen giriş yapın." }
 
-    const data = Object.fromEntries(formData.entries())
-    
-    // checkbox data
-    data.published = formData.get('published') === 'on' ? 'true' : 'false';
-    if (data.published === 'true') {
-        data.published = true as any;
-    } else {
-        data.published = false as any;
+    const data: Record<string, any> = {
+      title: formData.get("title") as string,
+      slug: formData.get("slug") as string,
+      description: formData.get("description") as string,
+      location: formData.get("location") as string,
+      status: formData.get("status") as string,
+      afterImage: formData.get("afterImage") as string,
+      beforeImage: (formData.get("beforeImage") as string) || "",
+      seoTitle: (formData.get("seoTitle") as string) || "",
+      seoDesc: (formData.get("seoDesc") as string) || "",
+      published: formData.get("published") === "on",
     }
-
-    // Handle files
-    const uploadedAfter = await handleFileUpload(formData.get("afterImageFile") as File | null);
-    if (uploadedAfter) {
-      data.afterImage = uploadedAfter;
-    }
-
-    const uploadedBefore = await handleFileUpload(formData.get("beforeImageFile") as File | null);
-    if (uploadedBefore) data.beforeImage = uploadedBefore;
 
     const validatedFields = projectSchema.safeParse(data)
 
@@ -157,7 +108,7 @@ export async function updateProject(id: string, prevState: any, formData: FormDa
     revalidatePath(`/projeler/${project.slug}`)
     return { success: true, project }
   } catch (error: any) {
-    console.error("Proje güncelleme genel hatası:", error)
+    console.error("Proje güncelleme hatası:", error)
     return { error: `Sistemsel bir hata oluştu: ${error.message || 'Bilinmeyen hata'}` }
   }
 }
