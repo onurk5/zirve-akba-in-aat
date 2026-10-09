@@ -12,7 +12,7 @@ export const projectSchema = z.object({
   location: z.string().min(2, "Lokasyon bilgisi zorunludur."),
   status: z.enum(["Tamamlandı", "Devam Ediyor", "Planlama Aşamasında"]),
   beforeImage: z.string().optional().or(z.literal("")),
-  afterImage: z.string().min(1, "Lütfen bir görsel ekleyin."),
+  afterImage: z.string({ required_error: "Lütfen bir görsel ekleyin." }).min(1, "Lütfen bir görsel ekleyin."),
   seoTitle: z.string().optional(),
   seoDesc: z.string().optional(),
 });

@@ -65,7 +65,7 @@ export default function EditProjectForm({ project }: { project: any }) {
       </div>
 
       <div className="bg-white rounded-2xl border shadow-sm p-6 md:p-8">
-        <form action={formAction} className="space-y-6">
+        <form action={formAction} className="space-y-6" encType="multipart/form-data">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Proje Başlığı</label>

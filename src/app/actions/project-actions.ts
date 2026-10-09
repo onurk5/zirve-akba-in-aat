@@ -9,7 +9,9 @@ import { supabase } from "@/lib/supabase"
 
 async function handleFileUpload(file: File | null) {
   try {
-    if (!file || typeof file === 'string' || !file.name || file.size === 0) return null;
+    if (!file || file.size === 0) return null;
+    if (typeof file === 'string') throw new Error(`Beklenmeyen dosya formatı (Metin geldi). Form doğru çalışmıyor. ${file.substring(0, 50)}`);
+    if (!file.name) throw new Error("Dosya adı yok.");
     
     const ext = file.name.split('.').pop() || "jpg";
     const filename = `${Date.now()}-${Math.round(Math.random() * 10000)}.${ext}`;
@@ -24,7 +26,7 @@ async function handleFileUpload(file: File | null) {
 
     if (error) {
       console.error("Supabase yükleme hatası:", error);
-      return null;
+      throw new Error(`Resim yüklenemedi: ${error.message}`);
     }
 
     const { data: publicUrlData } = supabase
@@ -33,9 +35,12 @@ async function handleFileUpload(file: File | null) {
       .getPublicUrl(filename);
       
     return publicUrlData.publicUrl;
-  } catch (err) {
+  } catch (err: any) {
     console.error("handleFileUpload crashed:", err);
-    return null;
+    if (err.message?.includes('Resim yüklenemedi')) {
+        throw err;
+    }
+    throw new Error(`Resim yükleme sunucu hatası: ${err.message || "Bilinmeyen"}`);
   }
 }
 
