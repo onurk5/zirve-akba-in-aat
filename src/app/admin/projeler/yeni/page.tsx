@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LocationSelector } from "@/components/ui/location-selector"
 import { uploadImageClient } from "@/lib/upload-client"
+import { ImagePicker } from "@/components/ui/image-picker"
 
 export default function NewProjectPage() {
   const [state, formAction, isPending] = useActionState(createProject, undefined)
@@ -148,59 +149,22 @@ export default function NewProjectPage() {
             <div className="space-y-4 md:col-span-2 p-4 bg-muted/20 rounded-xl border">
               <div>
                 <label className="text-sm font-medium text-foreground block mb-2">Öncesi Fotoğrafı (Opsiyonel)</label>
-                <div className="flex flex-col sm:flex-row gap-4 items-start">
-                  <div className="flex-1 w-full">
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileSelect(file, "before");
-                      }}
-                      className="w-full px-4 py-2 bg-white rounded-lg border text-sm" 
-                    />
-                  </div>
-                  {uploadingBefore && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Loader2 className="w-4 h-4 animate-spin" /> Yükleniyor...
-                    </div>
-                  )}
-                  {beforeImagePreview && !uploadingBefore && (
-                    <div className="w-full sm:w-32 h-24 shrink-0 rounded-lg overflow-hidden border relative bg-zinc-100">
-                      <img src={beforeImagePreview} alt="Öncesi" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
+                <ImagePicker 
+                  value={beforeImageUrl} 
+                  onChange={(url) => setBeforeImageUrl(url)} 
+                  label="Öncesi Görseli Seç veya Yükle" 
+                />
               </div>
 
               <div className="pt-4 border-t">
                 <label className="text-sm font-medium text-foreground block mb-2">Sonrası (Kapak) Fotoğrafı *</label>
-                <div className="flex flex-col sm:flex-row gap-4 items-start">
-                  <div className="flex-1 w-full">
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileSelect(file, "after");
-                      }}
-                      className="w-full px-4 py-2 bg-white rounded-lg border text-sm" 
-                    />
-                  </div>
-                  {uploadingAfter && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Loader2 className="w-4 h-4 animate-spin" /> Yükleniyor...
-                    </div>
-                  )}
-                  {afterImagePreview && !uploadingAfter && (
-                    <div className="w-full sm:w-32 h-24 shrink-0 rounded-lg overflow-hidden border relative bg-zinc-100">
-                      <img src={afterImagePreview} alt="Sonrası" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
+                <ImagePicker 
+                  value={afterImageUrl} 
+                  onChange={(url) => setAfterImageUrl(url)} 
+                  label="Kapak Görseli Seç veya Yükle" 
+                />
                 {state?.details?.afterImage && <p className="text-red-500 text-xs mt-2">{state.details.afterImage}</p>}
-                {!afterImageUrl && <p className="text-xs text-muted-foreground mt-3">Lütfen bir kapak görseli seçin. Seçtiğiniz anda otomatik olarak yüklenecektir.</p>}
-                {afterImageUrl && <p className="text-xs text-green-600 mt-3 font-medium">✓ Görsel başarıyla yüklendi!</p>}
+                {!afterImageUrl && <p className="text-xs text-muted-foreground mt-3">Lütfen bir kapak görseli seçin.</p>}
               </div>
             </div>
             
