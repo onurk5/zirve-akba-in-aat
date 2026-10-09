@@ -67,7 +67,7 @@ export function Footer({ logoUrl = "/logo.png" }: { logoUrl?: string }) {
                 </div>
                 <div className="flex flex-col pt-1">
                   <span className="text-xs text-zinc-400 uppercase tracking-widest mb-1 font-bold">E-Posta Adresi</span>
-                  <span className="text-zinc-900 font-bold text-base">bilgi@zirveakbas.com.tr</span>
+                  <span className="text-zinc-900 font-bold text-base">insaatzirveakbas@gmail.com</span>
                 </div>
               </li>
               <li className="flex items-start gap-4">

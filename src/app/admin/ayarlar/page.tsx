@@ -8,7 +8,7 @@ export default async function SettingsPage() {
     settings = {
       id: "new",
       companyName: "Zirve Akbaş İnşaat",
-      email: "bilgi@zirveakbas.com.tr",
+      email: "insaatzirveakbas@gmail.com",
       phone: "+90 532 000 00 00",
       address: "İstanbul",
       mapEmbedUrl: "",

@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
           <hr className="my-8 border-zinc-100" />
           
           <p className="text-sm text-zinc-500 font-medium">
-            Kişisel verilerinizle ilgili her türlü soru, talep ve şikayetiniz için bizimle <strong>bilgi@zirveakbas.com.tr</strong> adresinden veya doğrudan şirket merkezimizden iletişime geçebilirsiniz.
+            Kişisel verilerinizle ilgili her türlü soru, talep ve şikayetiniz için bizimle <strong>insaatzirveakbas@gmail.com</strong> adresinden veya doğrudan şirket merkezimizden iletişime geçebilirsiniz.
           </p>
         </div>
 

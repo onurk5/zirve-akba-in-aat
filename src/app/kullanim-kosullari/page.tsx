@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
           <hr className="my-8 border-zinc-100" />
           
           <p className="text-sm text-zinc-500 font-medium">
-            Sorularınız ve talepleriniz için <strong>bilgi@zirveakbas.com.tr</strong> adresinden bizimle iletişime geçebilirsiniz.
+            Sorularınız ve talepleriniz için <strong>insaatzirveakbas@gmail.com</strong> adresinden bizimle iletişime geçebilirsiniz.
           </p>
         </div>
 

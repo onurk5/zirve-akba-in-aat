@@ -70,7 +70,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-zinc-900 mb-2 uppercase tracking-widest text-sm">E-Posta</h3>
-                    <p className="text-zinc-600">bilgi@zirveakbas.com.tr</p>
+                    <p className="text-zinc-600">insaatzirveakbas@gmail.com</p>
                   </div>
                 </div>
               </div>
